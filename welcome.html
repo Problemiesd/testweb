@@ -11,8 +11,9 @@
         <h1>Welcome!</h1>
         <p>You have successfully logged in.</p>
 
-        <!-- Camera Access Button -->
+        <!-- Camera Access Buttons -->
         <button id="cameraButton" class="btn">Access Camera</button>
+        <button id="stopCameraButton" class="btn" style="display: none;">Stop Camera</button>
         
         <!-- Video Element to Show Camera Feed -->
         <div id="cameraContainer" style="display: none;">
@@ -23,24 +24,42 @@
     </div>
 
     <script>
-        // Accessing the Camera
+        // DOM Elements
         const cameraButton = document.getElementById("cameraButton");
+        const stopCameraButton = document.getElementById("stopCameraButton");
         const cameraContainer = document.getElementById("cameraContainer");
         const cameraFeed = document.getElementById("cameraFeed");
 
-        cameraButton.addEventListener("click", () => {
-            // Show the camera feed container
-            cameraContainer.style.display = "block";
+        let cameraStream = null; // To store the camera stream
 
-            // Access the user's camera
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then((stream) => {
-                    // Display the camera feed in the video element
-                    cameraFeed.srcObject = stream;
-                })
-                .catch((err) => {
-                    alert("Unable to access the camera: " + err.message);
-                });
+        // Start Camera with Rear Camera as Default
+        cameraButton.addEventListener("click", () => {
+            navigator.mediaDevices.getUserMedia({
+                video: { facingMode: "environment" } // "environment" sets the back camera as default
+            })
+            .then((stream) => {
+                cameraStream = stream; // Save the stream to stop it later
+                cameraFeed.srcObject = stream; // Set the video source
+                cameraContainer.style.display = "block";
+                stopCameraButton.style.display = "inline-block";
+                cameraButton.style.display = "none"; // Hide access camera button
+            })
+            .catch((err) => {
+                alert("Unable to access the camera: " + err.message);
+            });
+        });
+
+        // Stop the Camera
+        stopCameraButton.addEventListener("click", () => {
+            if (cameraStream) {
+                let tracks = cameraStream.getTracks();
+                tracks.forEach((track) => track.stop()); // Stop all video tracks
+                cameraFeed.srcObject = null; // Clear the video feed
+                cameraStream = null; // Clear the stream reference
+            }
+            cameraContainer.style.display = "none";
+            stopCameraButton.style.display = "none";
+            cameraButton.style.display = "inline-block"; // Show access camera button again
         });
     </script>
 </body>
