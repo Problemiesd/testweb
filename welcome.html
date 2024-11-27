@@ -15,9 +15,13 @@
         <button id="cameraButton" class="btn">Access Camera</button>
         <button id="stopCameraButton" class="btn" style="display: none;">Stop Camera</button>
         
-        <!-- Video Element to Show Camera Feed -->
-        <div id="cameraContainer" style="display: none;">
-            <video id="cameraFeed" autoplay playsinline style="width: 100%; margin-top: 15px; border: 1px solid #ddd;"></video>
+        <!-- Camera Feed with Mask -->
+        <div id="cameraContainer" style="display: none; position: relative;">
+            <!-- Camera Feed -->
+            <video id="cameraFeed" autoplay playsinline style="width: 100%;"></video>
+
+            <!-- Mask Overlay -->
+            <div id="cameraMask"></div>
         </div>
 
         <a href="index.html" class="btn">Logout</a>
