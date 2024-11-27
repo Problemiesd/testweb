@@ -73,3 +73,11 @@ h2, h1 {
     font-size: 14px;
     margin-top: 10px;
 }
+#cameraContainer {
+    margin-top: 15px;
+    text-align: center;
+}
+video {
+    border-radius: 5px;
+    max-width: 100%;
+}

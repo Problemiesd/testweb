@@ -10,7 +10,38 @@
     <div class="welcome-container">
         <h1>Welcome!</h1>
         <p>You have successfully logged in.</p>
+
+        <!-- Camera Access Button -->
+        <button id="cameraButton" class="btn">Access Camera</button>
+        
+        <!-- Video Element to Show Camera Feed -->
+        <div id="cameraContainer" style="display: none;">
+            <video id="cameraFeed" autoplay playsinline style="width: 100%; margin-top: 15px; border: 1px solid #ddd;"></video>
+        </div>
+
         <a href="index.html" class="btn">Logout</a>
     </div>
+
+    <script>
+        // Accessing the Camera
+        const cameraButton = document.getElementById("cameraButton");
+        const cameraContainer = document.getElementById("cameraContainer");
+        const cameraFeed = document.getElementById("cameraFeed");
+
+        cameraButton.addEventListener("click", () => {
+            // Show the camera feed container
+            cameraContainer.style.display = "block";
+
+            // Access the user's camera
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then((stream) => {
+                    // Display the camera feed in the video element
+                    cameraFeed.srcObject = stream;
+                })
+                .catch((err) => {
+                    alert("Unable to access the camera: " + err.message);
+                });
+        });
+    </script>
 </body>
 </html>
